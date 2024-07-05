@@ -1,7 +1,7 @@
 # Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques
 
 ## Project Overview
-This repository contains the LaTeX source files and compiled PDF for the Master's Thesis (Treball Final de Màster) titled "Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques" by Martí Mas Fullana. This project is part of the Master's program in Data Science at the University, under the supervision of Josep Suy Franch and Miquel Tarragona Margarit.
+This repository contains the LaTeX source files and compiled PDF for the Master's Thesis (Treball Final de Màster) titled "Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques" by Martí Mas Fullana. This project is part of the Master's program in Data Science at Universitat de Girona (UdG), in collaboration with DXC Technology, under the supervision of Josep Suy Franch (UdG) and Miquel Tarragona Margarit (DXC Technology).
 
 The resulting PDF file can be found in the TFM_MartiMasFullana folder: [[PDF]](TFM_MartíMasFullana/TFM_MartíMasFullana.pdf).
 
