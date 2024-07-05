@@ -1,7 +1,7 @@
 # Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques
 
 ## Project Overview
-This project, titled "Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques," is a Master's thesis by Martí Mas Fullana, completed as part of the Màster en Ciència de Dades program. The work focuses on fine-tuning a generative language model to create customized chatbots specifically designed for public administrations.
+This repository contains the LaTeX source files and compiled PDF for the Master's Thesis (Treball Final de Màster) titled "Ajustament d’un model generatiu de llenguatge per a la creació de xatbots personalitzats per administracions públiques" by Martí Mas Fullana. This project is part of the Master's program in Data Science at the University, under the supervision of Josep Suy Franch and Miquel Tarragona Margarit.
 
 The resulting PDF file can be found in the TFM_MartiMasFullana folder: [[PDF]](TFM_MartíMasFullana/TFM_MartíMasFullana.pdf).
 
