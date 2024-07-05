@@ -49,6 +49,8 @@ One of the most recent advances in the integration of language models has been t
 
 RAG-based chatbots offer a variety of benefits compared with more traditional systems. They are able to generate responses that are more coherent and contextually relevant. In this way users are both less frustrated and more satisfied. These systems also allow the chatbots to have access to newer, more up to date information than the data the model was originally trained on, as the data provided to the information retrieval component can be updated by simply adding new entries to the database. This makes the chatbot more adaptable and flexible, and allows it to provide more accurate and relevant information to users, reducing the necessity of performing full or partial retraining of the model, which can be prohibitively expensive.
 
+# TODO
+
 ## State of the Art
 This section reviews the existing literature and technologies relevant to generative language models and chatbot development. It highlights key advancements and identifies gaps that this project aims to address.
 
