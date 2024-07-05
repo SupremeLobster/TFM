@@ -5,3 +5,4 @@ Pipfile*
 *.bbl
 *.brf
 *.synctex.gz
+*.log
