@@ -169,6 +169,32 @@ The main goal of this project is to develop an advanced chatbot system that uses
 
 \section{Methodology}
 
+\subsection{Data Collection and Preparation}
+\label{subsec:data}
+
+\begin{itemize}
+  \item \textbf{Data Collection:} We are given a set of files documenting the laws related to social rights in Catalonia. These files are in PDF format, and contain a variety of information, including the text of the laws, the dates they were enacted, and the organizations responsible for enforcing them.
+  \item \textbf{Data Preparation:} We will extract the text from the PDF files and convert it into a format that can be used by the information retrieval system. This will involve cleaning the text and removing any extraneous characters. This will be done using the LlamaIndex Python library.
+\end{itemize}
+
+\subsection{RAG Implementation}
+\label{subsec:rag-implementation}
+
+\begin{itemize}
+  \item \textbf{Information Retrieval:} Develop a system capable of retrieving relevant information from a database based on user queries. This will involve creating an index of the laws related to social rights in Catalonia, and implementing a search algorithm that can return the most relevant laws based on the user query. In practise this will be done using the LlamaIndex Python library, which chunks the text into smaller pieces and indexes them.
+  \item \textbf{Combining Retrieval and Generation:} Integrate the retrieval system with the GPT model to generate coherent and contextually relevant responses to user queries. This will involve passing the retrieved information to the GPT model, which will generate a response based on this information.
+\end{itemize}
+
+\subsection{User Interface Design}
+\label{subsec:ui-design}
+
+\begin{itemize}
+  \item \textbf{UI Design:} Develop a user interface that allows users to interact with the chatbot in a natural and intuitive way. This will involve creating a chat interface that allows users to input queries and receive responses from the chatbot.
+  \item \textbf{UX Design:} Ensure that the user experience is smooth and seamless, and that users are able to easily access the information they need. This will involve testing the user interface with a group of users to identify any areas for improvement, as well as demoing the system to the stakeholders.
+\end{itemize}
+
+
+
 \chapter{Estat de l'art}
 \label{cap:estat}
 
