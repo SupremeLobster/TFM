@@ -194,6 +194,12 @@ The main goal of this project is to develop an advanced chatbot system that uses
 \end{itemize}
 
 
+\section{Architecture}
+
+Tenim una Frontend UI de conversa (rollo whatsapp) que comunica am un Backend que gestiona les crides als models de llenguatge i a la base de dades. El Backend també s'encarrega de la gestió de la base de dades i de la indexació de la informació.
+
+En el Frontend es realitza també el tema dels Hotwords: la màquina client escolta i processa localment al micròfon, de manera constant i en temps real. Si sent la paraula clau "xat" o "xatbot" activa el microfon i comença a gravar. La gravació s'envia al un server de reconeixement de veu, que retorna el text reconegut. Aquest text es passa al Backend per a que el chatbot pugui respondre. Per fer aixo s'utilitza la nostra versió de la llibreria EfficientWord-Net, que ha sigut modificada per tal de reduir el temps de resposta, els requeriments de la màquina client i el pes dels fitxers descarregats. S'ha aconseguit una millora d'un 100\% en el temps de resposta, i d'un 300\% en la reducció del pes dels fitxers descarregats (abans pesaven 80MB i ara en pesen 20MB). Aquestes millores s'han aconseguit sense sacrificar perceptiblement la precisió del reconeixement de veu, gràcies als mètodes de Quantització. Per fer anar aquest model en el navegador de manera eficient s'utilitza la llibreria WebAssembly (wasm).
+
 
 \chapter{Estat de l'art}
 \label{cap:estat}
