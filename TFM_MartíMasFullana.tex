@@ -198,12 +198,68 @@ The main goal of this project is to develop an advanced chatbot system that uses
 
 Tenim una Frontend UI de conversa (rollo whatsapp) que comunica am un Backend que gestiona les crides als models de llenguatge i a la base de dades. El Backend també s'encarrega de la gestió de la base de dades i de la indexació de la informació.
 
+
 \subsection{Hotword/Wakeword Detection}
 En el Frontend es realitza també el tema dels Hotwords: la màquina client escolta i processa localment al micròfon, de manera constant i en temps real. Si sent la paraula clau "xat" o "xatbot" activa el microfon i comença a gravar. La gravació s'envia al un server de reconeixement de veu, que retorna el text reconegut. Aquest text es passa al Backend per a que el chatbot pugui respondre. Per fer aixo s'utilitza la nostra versió de la llibreria EfficientWord-Net, que ha sigut modificada per tal de reduir el temps de resposta, els requeriments de la màquina client i el pes dels fitxers descarregats. S'ha aconseguit una millora d'un 100\% en el temps de resposta, i d'un 300\% en la reducció del pes dels fitxers descarregats (abans pesaven 80MB i ara en pesen 20MB). Aquestes millores s'han aconseguit sense sacrificar perceptiblement la precisió del reconeixement de veu, gràcies als mètodes de Quantització. Per fer anar aquest model en el navegador de manera eficient s'utilitza la llibreria WebAssembly (wasm).
 
 \subsection{Backend}
 
+\subsubsection{Conversation Flow}
+
 The Backend implements, among others, the conversation flow followed by the chatbot. It implements multiple stages and follows a state machine to manage the conversation. User queries at each stage are routed to the appropriate model.
+
+Conversations flows are implemented using Flowable. Here are the flow diagrams for the conversation stages:
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/0_DsoConversation.png}
+  \caption{Top level flow diagram for the conversation}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/1_DsoExecuteAntiDAN.png}
+  \caption{Flow diagram for the Anti DAN stage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/2_DsoTreatScenario.png}
+  \caption{Flow diagram for the Treat Scenario stage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/3_AnswerRagQuestionIfExists.png}
+  \caption{Flow diagram for the Answer RAG Question If Exists stage}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/4_1_DsoExecuteSituationDiscoveryScenario.png}
+  \caption{Flow diagram for the scenario where we need to discover the user's situation}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/4_2_DsoExecuteProductSelectionScenario.png}
+  \caption{Flow diagram for the scenario where we need to select a product from the kSocial catalog given the conversation we have had with the user}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/4_3_DsoProductElegibilityScenario.png}
+  \caption{Flow diagram for the scenario where we need the user to select one of the products from the kSocial catalog}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imatges/5_InferVariablesProcess.png}
+  \caption{Flow diagram for inferring necessary variables for the current scenario based on the conversation}
+\end{figure}
+
+
 
 \subsubsection{Model Routing}
 
@@ -215,6 +271,7 @@ We use a slightly tweaked version of the fairly new RouteLLM python library. Thi
 \subsubsection{Information Retrieval}
 
 We do RAG using the LlamaIndex python library. We implement a custom RAG algorithm that uses hierarchical embeddings of chunks, allowing us to capture both fine-grained and coarse-grained information. This was implemented by Joan Oller.
+
 
 
 \chapter{Estat de l'art}
