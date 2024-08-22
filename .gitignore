@@ -6,3 +6,4 @@ Pipfile*
 *.brf
 *.synctex.gz
 *.log
+*.bkp
