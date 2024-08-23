@@ -5,5 +5,15 @@ Pipfile*
 *.bbl
 *.brf
 *.synctex.gz
+*.synctex.gz(busy)
+*.synctex(busy)
 *.log
 *.bkp
+*.aux
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.toc
