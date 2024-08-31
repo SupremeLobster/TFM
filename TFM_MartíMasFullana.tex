@@ -108,6 +108,8 @@ Per començar vull agrair molt especialment a \ldots
 \chapter{Introducció}
 \label{cap:intro}
 
+We present a chatbot system that uses GPT (Generative Pre-trained Transformer) technology and RAG (Retrieval Augmented Generation) to provide assistance with social rights and benefits in Catalonia. Our client is the department of social rights of the Generalitat de Catalunya (\textit{Departament de Drets Socials} or DSO).
+
 \section{Antecedents}
 \label{sec:antecedents}
 
@@ -248,10 +250,13 @@ We use the GPT-4o and GPT-4o Mini models, which are the latest versions of the G
 
 \subsubsection{Conversation Flow}
 
-The Backend implements, among others, the conversation flow followed by the chatbot. It implements multiple stages and follows a state machine to manage the conversation. User queries at each stage are routed to the appropriate model.
+The Backend implements, the conversation flow followed by the chatbot. It implements multiple stages and follows a state machine to manage the conversation. User queries at each stage are routed to the appropriate model.
 
-Conversations flows are implemented using Flowable. Here are the flow diagrams for the conversation stages:
+Conversations flows are implemented using Flowable. Figures \ref{fig:conversation}, \ref{fig:antidan}, \ref{fig:treatscenario}, \ref{fig:answerragquestionifexists}, \ref{fig:executesituationdiscoveryscenario}, \ref{fig:executeproductselectionscenario}, \ref{fig:productelegibilityscenario}, and \ref{fig:infervariablesprocess} show the flow diagrams for the different stages of the conversation.
 
+At each stage the backend can decide to talk to one of the other components of the architecture. For example, during the RAG stage it uses our Vector Search API component to generate a response based on the information retrieved from the database. In another case, in the scenario where we are discovering the user's situation, the backend talks to the IA Social component to and asks it if, given the current conversation, there are any SNOMEDs that might apply to the user.
+
+The backend also implements any error handling that might be necessary. The error handling is implemented directly on the flow diagram itself.
 
 \begin{figure}[htb]
   \label{fig:conversation}
@@ -271,46 +276,66 @@ Conversations flows are implemented using Flowable. Here are the flow diagrams f
   \centering
   \includegraphics[width=1\textwidth]{imatges/2_DsoTreatScenario.png}
   \caption{Flow diagram for the Treat Scenario stage}
+  \label{fig:treatscenario}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=1\textwidth]{imatges/3_AnswerRagQuestionIfExists.png}
   \caption{Flow diagram for the Answer RAG Question If Exists stage}
+  \label{fig:answerragquestionifexists}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_1_DsoExecuteSituationDiscoveryScenario.png}
   \caption{Flow diagram for the scenario where we need to discover the user's situation}
+  \label{fig:executesituationdiscoveryscenario}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_2_DsoExecuteProductSelectionScenario.png}
   \caption{Flow diagram for the scenario where we need to select a product from the kSocial catalog given the conversation we have had with the user}
+  \label{fig:executeproductselectionscenario}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_3_DsoProductElegibilityScenario.png}
   \caption{Flow diagram for the scenario where we need the user to select one of the products from the kSocial catalog}
+  \label{fig:productelegibilityscenario}
 \end{figure}
 
 \begin{figure}[htb]
   \centering
   \includegraphics[width=1\textwidth]{imatges/5_InferVariablesProcess.png}
   \caption{Flow diagram for inferring necessary variables for the current scenario based on the conversation}
+  \label{fig:infervariablesprocess}
 \end{figure}
 
+\subsection{Vector Search API}
+\label{subsec:vector_search_api}
 
+As we needed to implement a few custom components all related to the RAG system, we decided to abstract them into a single separate component, the Vector Search API. This component is responsible for managing the information retrieval system, and for generating responses based on the information retrieved from the database. This component is abstract enough to be reused in chatbot systems other than the one we are developing for the DSO.
+
+This API is implemented in Python using Flask to serve the API endpoints, and with Waitress as the WSGI server, as depicted in Figure \ref{fig:architecture}.
+
+The following sections describe the features that this API provides.
 
 \subsubsection{Model Routing}
 
-We use a slightly tweaked version of the fairly new RouteLLM python library. This allows us to route a certain percentage of queries to a "stronger", more expensive model and the rest to a "weaker", less expensive model. With this system we are able to achieve X\% of the performance of the stronger model at a fraction of the cost. The RouteLLM system uses a small BERT classifier model that decides which queries should be routed to the stronger model and which to the weaker model. This classifier was trained by the original library authors on a dataset of human preferences augmented with synthetic data generated using GPT-4. They report good generalization performance, so we apply the system on a pair consisting of GPT-4o and GPT-3.5-Turbo.
+We use a slightly tweaked version of the fairly new RouteLLM Python library. This allows us to route a certain percentage of queries to a "stronger", more expensive model and the rest to a "weaker", less expensive model. With this system we are able to achieve X\% of the performance of the stronger model at a fraction of the cost. The RouteLLM system uses a small BERT classifier model that decides which queries should be routed to the stronger model and which to the weaker model. This classifier was trained by the original library authors on a dataset of human preferences augmented with synthetic data generated using GPT-4. They report good generalization performance, so we apply the system on a pair consisting of GPT-4o and GPT-4o Mini. We have also made the necessary changes to the library to make it compatible with the Azure OpenAI models, which didn't have official support.
 
-// TODO: PUT HERE EXAMPLES OF CONVERSATIONS BEING ROUTED TO DIFFERENT MODELS DEPENDING ON WHAT IS BEING ASKED.
+We have translated the dataset the authors used to train the BERT classifier to Catalan, and are in the process of retraining the classifier on this new dataset, at the time of writing.
 
+The translated training dataset consists of two parts: the translated texts and the embeddings of the texts. The translations were generated using the GPT-4o model and the embeddings using the \textit{text-embedding-3-large} model. The total cost of generating the translations and embeddings was around 500 euros. The datasets can be found here \href{https://huggingface.co/datasets/SupremeLobster/gpt4_judge_battles_catalan}{[translated texts]} and here \href{https://huggingface.co/datasets/SupremeLobster/gpt4_judge_battles_catalan_embeddings}{[embeddings]}.
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.5\textwidth]{imatges/Routed conversation.png}
+  \caption{Example of conversation messages being routed to different models according to their complexity}
+\end{figure}
 
 \subsubsection{Information Retrieval}
 
