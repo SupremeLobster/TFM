@@ -173,15 +173,15 @@ The main goal of this project is to develop an advanced chatbot system that uses
 \label{subsec:data}
 
 \begin{itemize}
-  \item \textbf{Data Collection:} We are given a set of files documenting the laws related to social rights in Catalonia. These files are in PDF format, and contain a variety of information, including the text of the laws, the dates they were enacted, and the organizations responsible for enforcing them.
-  \item \textbf{Data Preparation:} We will extract the text from the PDF files and convert it into a format that can be used by the information retrieval system. This will involve cleaning the text and removing any extraneous characters. This will be done using the LlamaIndex Python library.
+  \item \textbf{Data Collection:} We are given by the stakeholders a set of websites documenting the laws related to social rights in Catalonia and also documenting available social benefits. These websites contain a variety of information, including the text of the laws and the social benefits, what conditions are necessary to access them, and how to apply for them.
+  \item \textbf{Data Preparation:} We will extract the text from the websites using web scraping and convert them into a format that can be used by the information retrieval system. This will involve cleaning the text and removing any extraneous characters. This will be done using custom web scraping scripts.
 \end{itemize}
 
 \subsection{RAG Implementation}
 \label{subsec:rag-implementation}
 
 \begin{itemize}
-  \item \textbf{Information Retrieval:} Develop a system capable of retrieving relevant information from a database based on user queries. This will involve creating an index of the laws related to social rights in Catalonia, and implementing a search algorithm that can return the most relevant laws based on the user query. In practise this will be done using the LlamaIndex Python library, which chunks the text into smaller pieces and indexes them.
+\item \textbf{Information Retrieval:} Develop a system capable of retrieving relevant information from a database based on user queries. This will involve creating an index of the laws related to social rights and available social benefits in Catalonia, and implementing a search algorithm that can return the most relevant laws based on the user query. In practice this will be done using the LlamaIndex Python library, which chunks the text into smaller pieces and indexes them.
   \item \textbf{Combining Retrieval and Generation:} Integrate the retrieval system with the GPT model to generate coherent and contextually relevant responses to user queries. This will involve passing the retrieved information to the GPT model, which will generate a response based on this information.
 \end{itemize}
 
@@ -196,16 +196,53 @@ The main goal of this project is to develop an advanced chatbot system that uses
 
 \section{Architecture}
 
-Tenim una Frontend UI de conversa (rollo whatsapp) que comunica am un Backend que gestiona les crides als models de llenguatge i a la base de dades. El Backend també s'encarrega de la gestió de la base de dades i de la indexació de la informació.
+We develop an Angular Frontend conversation UI (similar to other messaging apps) that communicates with a Backend that manages the calls to the language models and the database. The Backend also handles the management of the database and the indexing of the information. The diagram of the app's architecture is shown in Figure \ref{fig:architecture}.
+
+\begin{figure}[htb]
+\label{fig:architecture}
+  \centering
+\includegraphics[width=1\textwidth]{imatges/Full DSO App Architecture.drawio.png}
+\caption{App Architecture}
+\end{figure}
+
+Over the following sections we will describe the different components of the system in more detail, and how a user's interaction is processed through the system.
+
+\subsection{Hotword/Wakeword Detection}
+On the frontend we implement a custom version of the EfficientWord-Net \cite{Chidhambararajan2022EfficientWordNet} hotword detector, that has been quantized \cite{Zhang2023PostTrainingQuantizationNeuralNetworks}. To implement it we use ONNX \cite{onnx} and WebAssembly (Wasm) \cite{wasm}, which run directly in the browser, ensuring no data leaves the client's machine inadvertently. The hotword detector listens to the microphone data in real-time, and when it hears the keyword ``chat'' or ``chatbot'', it activates the microphone and starts recording. We will see how this data is processed in the \ref{subsec:azure_services} section.
+
+The EfficientWord-Net model has been quantized to 8-bits, which has reduced the size of the model from 80MB to 20MB, and has improved the response time by 100\%. This has been achieved without perceptibly sacrificing the accuracy of the hotword detection.
+
+The hotword detector analyzes audio data in chunks of 1.5 seconds, overlapped by 0.75 seconds. The raw audio signal is first converted to a Mel spectrogram (Figure~\ref{fig:mel_spectrogram}), which is then passed through a ResNet \cite{He2015DeepResidualLearningImage} model to generate semantic embedding vectors. These vectors are then compared to the embedding vectors of reference recordings of the hotword (which are prerecorded) using cosine similarity. If the similarity is above a certain threshold, the hotword is detected.
+We use the pretrained model as provided by the EfficientWord-Net library, with no further training.
 
 \begin{figure}[htb]
   \centering
-\includegraphics[width=1\textwidth]{imatges/Full DSO App Architecture.drawio.png}
-  \caption{Arquitectura del sistema}
+  \includegraphics[width=1\textwidth]{imatges/MelSpectrogram.png}
+  \caption{Mel spectrogram of the audio ``Hello world'' (image taken from \cite{Chidhambararajan2022EfficientWordNet})}
+  \label{fig:mel_spectrogram}
 \end{figure}
 
-\subsection{Hotword/Wakeword Detection}
-En el Frontend es realitza també el tema dels Hotwords: la màquina client escolta i processa localment al micròfon, de manera constant i en temps real. Si sent la paraula clau "xat" o "xatbot" activa el microfon i comença a gravar. La gravació s'envia al un server de reconeixement de veu, que retorna el text reconegut. Aquest text es passa al Backend per a que el chatbot pugui respondre. Per fer aixo s'utilitza la nostra versió de la llibreria EfficientWord-Net, que ha sigut modificada per tal de reduir el temps de resposta, els requeriments de la màquina client i el pes dels fitxers descarregats. S'ha aconseguit una millora d'un 100\% en el temps de resposta, i d'un 300\% en la reducció del pes dels fitxers descarregats (abans pesaven 80MB i ara en pesen 20MB). Aquestes millores s'han aconseguit sense sacrificar perceptiblement la precisió del reconeixement de veu, gràcies als mètodes de Quantització. Per fer anar aquest model en el navegador de manera eficient s'utilitza la llibreria WebAssembly (wasm).
+Because this system needs to run on the browser, and there is no existing implementation of a Mel spectrogram converter, we implement our own converter directly in TypeScript. This converter is as close as possible to a direct translation --from Python to TypeScript-- of the original code from the EfficientWord-Net library. By doing so we ensure data generated by our implementation is equivalent to that generated by the original implementation. We evaluate that this is the case by making bitwise comparisons of the output of both implementations (subtracting one image from the other), and find there are no differences (all pixels in the resulting image are exactly 0).
+
+On our reference system, which consists of a Dell Latitude 3440 laptop with a 13th Gen Intel(R) Core(TM) i5-1345U CPU, the hotword detector has a response time of around 80-100 milliseconds, which is well within the acceptable range for real-time applications.
+
+\subsection{Azure Services}
+\label{subsec:azure_services}
+
+\subsubsection{Speech-to-Text}
+
+When the hotword detector activates the microphone, the audio data is sent to the Azure Speech-to-Text service. This service converts the audio data into text, which is then sent to the Backend for processing. The Azure Speech-to-Text service uses the Whisper \cite{Radford2022RobustSpeechRecognitionLargeScale} model to accurately transcribe speech into text.
+
+\subsubsection{PostgreSQL Database}
+\label{subsubsec:database}
+
+The PostgreSQL database contains the text of the laws related to social rights and available social benefits in Catalonia. This data is indexed using the LlamaIndex Python library to chunk the text into smaller pieces, index them and  help create semantic embeddings. When a user query is received, the information retrieval system searches the database for the most relevant laws and benefits based on the query, and returns this information to the GPT model for generation.
+
+\subsubsection{GPT Model}
+
+The GPT model is used to generate coherent and contextually relevant responses to user queries based on the information retrieved from the database. The GPT model is a transformer-based \cite{Vaswani2023AttentionNeed} language model that is trained on a large dataset of text to generate human-like responses to user queries.
+
+We use the GPT-4o and GPT-4o Mini models, which are the latest versions of the GPT model developed by OpenAI at the time of writing.
 
 \subsection{Backend}
 
@@ -270,16 +307,22 @@ Conversations flows are implemented using Flowable. Here are the flow diagrams f
 
 \subsubsection{Model Routing}
 
-We use a slightly tweaked version of the fairly new RouteLLM python library. This allows us to route a certain percentage of queries to a "stronger", more expensive model and the rest to a "weaker", less expensive model. With this system we are able to achieve X\% of the performance of the stronger model at a fraction of the cost. The RouterLLM system uses a small BERT classifier model that decides which queries should be routed to the stronger model and which to the weaker model. This classifier was trained by the original library authors on a dataset of human preferences augmented with synthetic data generated using GPT-4. They report good generalization performance, so we apply the system on a pair consisting of GPT-4o and GPT-3.5-Turbo.
+We use a slightly tweaked version of the fairly new RouteLLM python library. This allows us to route a certain percentage of queries to a "stronger", more expensive model and the rest to a "weaker", less expensive model. With this system we are able to achieve X\% of the performance of the stronger model at a fraction of the cost. The RouteLLM system uses a small BERT classifier model that decides which queries should be routed to the stronger model and which to the weaker model. This classifier was trained by the original library authors on a dataset of human preferences augmented with synthetic data generated using GPT-4. They report good generalization performance, so we apply the system on a pair consisting of GPT-4o and GPT-3.5-Turbo.
 
 // TODO: PUT HERE EXAMPLES OF CONVERSATIONS BEING ROUTED TO DIFFERENT MODELS DEPENDING ON WHAT IS BEING ASKED.
 
 
 \subsubsection{Information Retrieval}
 
-We do RAG using the LlamaIndex python library. We implement a custom RAG algorithm that uses hierarchical embeddings of chunks, allowing us to capture both fine-grained and coarse-grained information. This was implemented by Joan Oller.
+We do RAG using the LlamaIndex python library. We use a less common RAG algorithm that uses hierarchical embeddings of chunks, allowing us to capture both fine-grained and coarse-grained information. We call this method "Small To Big Retrieval" or STBR.
 
+\subsection{Our Contributions}
+During the development of this project we have iterated and made changes to a few existing tools and components. Here we link to our forks of the repositories.
 
+\begin{itemize}
+  \item EfficientWord-Net: \url{https://github.com/SupremeLobster/EfficientWord-Net} - Our fork of the EfficientWord-Net library, which has been modified to reduce response time, client machine requirements, and the size of downloaded files, through Quantization methods.
+  \item RouteLLM: \url{https://github.com/SupremeLobster/RouteLLM} - Our fork of the RouteLLM library, which allows us to route a certain percentage of queries to a "stronger", more expensive model and the rest to a "weaker", less expensive model. Our changes are in the branch "feature/support-azure-openai-embeddings". These changes made the library compatible with the Azure OpenAI models, which didn't have official support.
+\end{itemize}
 
 \chapter{Estat de l'art}
 \label{cap:estat}

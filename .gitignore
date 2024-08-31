@@ -17,3 +17,6 @@ Pipfile*
 *.lot
 *.out
 *.toc
+*.dtmp
+
+DiagramesDSO_fase1.drawio
