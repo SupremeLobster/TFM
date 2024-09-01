@@ -105,12 +105,12 @@ Per començar vull agrair molt especialment a \ldots
 
 \mainmatter
 
-\chapter{Introducció}
+\chapter{Introduction}
 \label{cap:intro}
 
 We present a chatbot system that uses GPT (Generative Pre-trained Transformer) technology and RAG (Retrieval Augmented Generation) to provide assistance with social rights and benefits in Catalonia. Our client is the department of social rights of the Generalitat de Catalunya (\textit{Departament de Drets Socials} or DSO).
 
-\section{Antecedents}
+\section{Background}
 \label{sec:antecedents}
 
 \subsection{Introduction to Dialogue Systems}
@@ -266,52 +266,52 @@ The backend also implements any error handling that might be necessary. The erro
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:antidan}
   \centering
   \includegraphics[width=1\textwidth]{imatges/1_DsoExecuteAntiDAN.png}
   \caption{Flow diagram for the Anti DAN stage}
-  \label{fig:antidan}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:treatscenario}
   \centering
   \includegraphics[width=1\textwidth]{imatges/2_DsoTreatScenario.png}
   \caption{Flow diagram for the Treat Scenario stage}
-  \label{fig:treatscenario}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:answerragquestionifexists}
   \centering
   \includegraphics[width=1\textwidth]{imatges/3_AnswerRagQuestionIfExists.png}
   \caption{Flow diagram for the Answer RAG Question If Exists stage}
-  \label{fig:answerragquestionifexists}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:executesituationdiscoveryscenario}
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_1_DsoExecuteSituationDiscoveryScenario.png}
   \caption{Flow diagram for the scenario where we need to discover the user's situation}
-  \label{fig:executesituationdiscoveryscenario}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:executeproductselectionscenario}
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_2_DsoExecuteProductSelectionScenario.png}
   \caption{Flow diagram for the scenario where we need to select a product from the kSocial catalog given the conversation we have had with the user}
-  \label{fig:executeproductselectionscenario}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:productelegibilityscenario}
   \centering
   \includegraphics[width=1\textwidth]{imatges/4_3_DsoProductElegibilityScenario.png}
   \caption{Flow diagram for the scenario where we need the user to select one of the products from the kSocial catalog}
-  \label{fig:productelegibilityscenario}
 \end{figure}
 
 \begin{figure}[htb]
+  \label{fig:infervariablesprocess}
   \centering
   \includegraphics[width=1\textwidth]{imatges/5_InferVariablesProcess.png}
   \caption{Flow diagram for inferring necessary variables for the current scenario based on the conversation}
-  \label{fig:infervariablesprocess}
 \end{figure}
 
 \subsection{Vector Search API}
@@ -339,9 +339,25 @@ The translated training dataset consists of two parts: the translated texts and 
 
 \subsubsection{Information Retrieval}
 
-We do RAG using the LlamaIndex python library. We use a less common RAG algorithm that uses hierarchical embeddings of chunks, allowing us to capture both fine-grained and coarse-grained information. We call this method "Small To Big Retrieval" or STBR.
+We do RAG using the LlamaIndex python library.
 
-\subsection{Our Contributions}
+We use two versions of RAG: normal RAG and Small To Big Retrieval (STBR).
+
+\begin{itemize}
+  \item \textbf{Normal RAG:} This is the standard RAG algorithm. It simply creates an embedding of the user query and does cosine similarity with the embeddings of the chunks in the database to retrieve the N most relevant chunks. In practice the database implements this with the Hierarchical Navigable Small World (HNSW) \cite{Malkov2018EfficientRobustApproximateNearestNeighbors} algorithm, which is a fast approximate nearest neighbor search algorithm, in order to avoid having to compare the user query with all the entries in the database's table. However this implementation is invisible, as the database itself executes it.
+  \item \textbf{Small To Big Retrieval (STBR):} This is a less common RAG algorithm that uses hierarchical embeddings of chunks, allowing us to capture both fine-grained and coarse-grained information. Figure \ref{fig:SmallToBigRetrieval} shows our hierarchy-of-embeddings setup. Each level's embeddings correspond to smaller and smaller chunks of the text. We have 3 levels of embeddings. This can be thought of as analogous to the way a CNN model captures both fine-grained and coarse-grained information, where deeper layers have a larger receptive field. We implement the algorithm using the \href{https://docs.llamaindex.ai/en/stable/examples/retrievers/recursive_retriever_nodes/}{RecursiveRetriever class} from the LlamaIndex library.
+  
+  The STBR algorithm is implemented in the Vector Search API.
+\end{itemize}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.5\textwidth]{imatges/Small To Big Retrieval.drawio.png}
+  \caption{Small To Big Retrieval (STBR) embeddings hierarchy}
+  \label{fig:SmallToBigRetrieval}
+\end{figure}
+
+\subsection{Our Contributions to Open-Source}
 During the development of this project we have iterated and made changes to a few existing tools and components. Here we link to our forks of the repositories.
 
 \begin{itemize}
