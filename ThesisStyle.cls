@@ -728,13 +728,13 @@
     \parindent 1em%
     \noindent
     \hb@xt@1.8em{\hss\@makefnmark}#1}
-\newcommand\contentsname{Index}
-\newcommand\listfigurename{List of Figures}
-\newcommand\listtablename{List of Tables}
+\newcommand\contentsname{Índex}
+\newcommand\listfigurename{Llista de Figures}
+\newcommand\listtablename{Llista de Taules}
 \newcommand\bibname{Bibliography}
 \newcommand\indexname{Index}
-\newcommand\figurename{Figure}
-\newcommand\tablename{Table}
+\newcommand\figurename{Figura}
+\newcommand\tablename{Taula}
 \newcommand\partname{Part}
 \newcommand\chaptername{Chapter}
 \newcommand\appendixname{Appendix}
