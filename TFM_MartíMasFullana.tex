@@ -112,6 +112,17 @@ Finally, I would like to thank my fiancée for her unwavering love and support.
 
 We present a chatbot system that uses GPT (Generative Pre-trained Transformer) technology and RAG (Retrieval Augmented Generation) to provide assistance with social rights and benefits in Catalonia. Our client is the department of social rights of the Generalitat de Catalunya (\textit{Departament de Drets Socials} or DSO).
 
+\section{Key Terms and Definitions}
+\label{sec:terms}
+
+\begin{itemize}
+  \item \textbf{DSO:} \textit{Departament de Drets Socials}, tghe Department of Social Rights of the Generalitat de Catalunya. This department is responsible for managing social benefits and services in Catalonia.
+  \item \textbf{SNOMED:} A SNOMED, short for Systematized Nomenclature of Medicine, is a code that represents a medical concept. For example, the SNOMED code for ``diabetes'' is 73211009.
+  
+  For reasons not relevant to this project, the Department of Social Rights uses SNOMEDs to represent a user's situation. These SNOMEDs are used to determine which social benefits a user might be eligible for. For example, they have a SNOMED for ``Sexist Violence at Home''. As we will see in chapter \ref{cap:architecture}, we have a component called \textit{IA Social} that can infer which SNOMEDs might apply to a user based on the conversation.
+  \item \textbf{Products:} These are the actual social benefits that the user might be eligible for. These might entail things like monetary aid, legal assistance, or other forms of support. The products are determined by the SNOMEDs that apply to the user. The Department of Social Rights provides us with an API called ``kSocial'' (``k'' is for ``Katalog'') that we can use to query which products are available for a given set of SNOMEDs.
+\end{itemize}
+
 \chapter{Background}
 \label{cap:background}
 
@@ -201,6 +212,7 @@ The main goal of this project is to develop an advanced chatbot system that uses
 
 
 \chapter{Architecture}
+\label{cap:architecture}
 
 We develop an Angular Frontend conversation UI (similar to other messaging apps) that communicates with a Backend that manages the calls to the language models and the database. The Backend also handles the management of the database and the indexing of the information. The diagram of the app's architecture is shown in Figure \ref{fig:architecture}.
 
