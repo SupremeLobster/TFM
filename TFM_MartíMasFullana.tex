@@ -16,7 +16,7 @@
     \resizebox{\textwidth}{!}{\begin{tabular}{ | l |}
         \hline
         \\
-        \includegraphics[scale=0.9]{imatges/logo_eps.png}    \\[0.7cm]
+        \includegraphics[scale=0.9]{img/logo_eps.png}    \\[0.7cm]
         \centerline{Treball Final de Màster}                 \\[1cm]
         \hline
         \\
@@ -52,7 +52,7 @@
 \begin{titlepage}
 
   % Upper part of the page
-  \includegraphics[scale=0.9]{imatges/logo_eps.png} \\[1cm]
+  \includegraphics[scale=0.9]{img/logo_eps.png} \\[1cm]
   \begin{center}
     \textsc{\Large Master's Thesis} \\[1cm]
 
@@ -110,7 +110,21 @@ Finally, I would like to thank my fiancée for her unwavering love and support.
 \chapter{Introduction}
 \label{cap:intro}
 
-We present a chatbot system that uses GPT (Generative Pre-trained Transformer) technology and RAG (Retrieval Augmented Generation) to provide assistance with social rights and benefits in Catalonia. Our client is the department of social rights of the Generalitat de Catalunya (\textit{Departament de Drets Socials} or DSO).
+We present a chatbot system that uses GPT (Generative Pre-trained Transformer) technology and RAG (Retrieval Augmented Generation) to provide assistance with social rights and benefits in Catalonia. Our client is the department of social rights of the Generalitat de Catalunya (\textit{Departament de Drets Socials} or DSO). This thesis has been developed in collaboration with \bolditalic{DXC Technology}.
+
+\section{About DXC Technology}
+\label{sec:dxc}
+
+\begin{figure}[htb]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img/DXC_Technology_Logo.png}
+  \caption{DXC Technology Logo}
+  \label{fig:dxc_logo}
+\end{figure}
+
+DXC Technology is a global IT services company that provides a wide range of services to clients in various industries. It has a strong presence in the public sector, providing IT solutions to government agencies and public administrations. The company has a long history of working with public sector clients to develop innovative solutions that improve service delivery and enhance citizen engagement.
+
+DXC Technology is a multinational corporation employing over 130,000 people in over 70 countries, headquartered in Tysons, Virginia, USA. In Spain it has offices in Madrid, Barcelona, Valencia, Bilbao, Sevilla, Madrid and Girona.
 
 \section{Key Terms and Definitions}
 \label{sec:terms}
@@ -266,7 +280,7 @@ We develop an Angular Frontend conversation UI (similar to other messaging apps)
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Full DSO App Architecture.drawio.png}
+  \includegraphics[width=1\textwidth]{img/Full DSO App Architecture.drawio.png}
   \caption{App Architecture}
   \label{fig:architecture}
 \end{figure}
@@ -280,7 +294,7 @@ The frontend is implemented in Angular, a popular web development framework. The
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/UI Design.png}
+  \includegraphics[width=1\textwidth]{img/UI Design.png}
   \caption{Frontend Interface}
   \label{fig:frontend}
 \end{figure}
@@ -297,7 +311,7 @@ We use the pretrained model as provided by the EfficientWord-Net library, with n
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/MelSpectrogram.png}
+  \includegraphics[width=1\textwidth]{img/MelSpectrogram.png}
   \caption{Mel spectrogram of the audio ``Hello world'' (image taken from \cite{Chidhambararajan2022EfficientWordNet})}
   \label{fig:mel_spectrogram}
 \end{figure}
@@ -365,7 +379,7 @@ The translated training dataset consists of two parts: the translated texts and 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.5\textwidth]{imatges/Routed conversation.png}
+  \includegraphics[width=0.5\textwidth]{img/Routed conversation.png}
   \caption{Example of conversation messages being routed to different models according to their complexity}
   \label{fig:model_routing_example}
 \end{figure}
@@ -386,7 +400,7 @@ We use two versions of RAG: normal RAG and Small To Big Retrieval (STBR).
 
 \begin{figure}[htb]
   \centering
-  \includegraphics[width=0.5\textwidth]{imatges/Small To Big Retrieval.drawio.png}
+  \includegraphics[width=0.5\textwidth]{img/Small To Big Retrieval.drawio.png}
   \caption{Small To Big Retrieval (STBR) embeddings hierarchy}
   \label{fig:SmallToBigRetrieval}
 \end{figure}
@@ -430,42 +444,42 @@ During the development of this project we have iterated and made changes to a fe
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Conversation_process.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Conversation_process.bpmn20.png}
   \caption{Top level flow diagram for the conversation}
   \label{fig:conversation}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Execute_anti_DAN.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Execute_anti_DAN.bpmn20.png}
   \caption{Flow diagram for the Anti DAN stage}
   \label{fig:antidan}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Treat_conversation_scenario.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Treat_conversation_scenario.bpmn20.png}
   \caption{Flow diagram for treating a scenario}
   \label{fig:treatscenario}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Answer_question_if_exists.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Answer_question_if_exists.bpmn20.png}
   \caption{Flow diagram for the answering a question using RAG (if a question exists)}
   \label{fig:answerragquestionifexists}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Situation_discovery_scenario.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Situation_discovery_scenario.bpmn20.png}
   \caption{Flow diagram for the scenario where we need to discover the user's situation}
   \label{fig:executesituationdiscoveryscenario}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=1\textwidth]{imatges/Infere_conversation_variables.bpmn20.png}
+  \includegraphics[width=1\textwidth]{img/Infere_conversation_variables.bpmn20.png}
   \caption{Flow diagram for inferring necessary variables for the current scenario based on the conversation}
   \label{fig:infervariablesprocess}
 \end{figure}
