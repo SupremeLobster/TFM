@@ -95,7 +95,7 @@ This document presents the design and implementation of a customized chatbot sys
 \chapter*{Acknowledgements}
 \label{cap:acknowledgements}
 
-I would like to express my gratitude to my tutor Josep Suy Franch for his guidance and support throughout the development of this project. I would also like to thank Benjami Fuertes, Sergi Martinez and Joan Oller for their hard work and dedication to the project, and for their patience answering my questions, as well as thank DXC Technology for providing me with this opportunity. I thank my family and friends for their encouragement and understanding during this time.
+I would like to express my gratitude to my tutor Josep Suy Franch for his guidance and support throughout the development of this project. I would also like to thank Benjamí Fuertes, Sergi Martinez and Joan Oller for their hard work and dedication to the project, and for their patience answering my questions, as well as thank DXC Technology for providing me with this opportunity. I thank my family and friends for their encouragement and understanding during this time.
 Finally, I would like to thank my fiancée for her unwavering love and support.
 
 
@@ -153,12 +153,49 @@ Dialogue systems, also known as chatbots, have experienced a significant step-ch
 \section{Towards Language Models}
 \label{sec:language}
 
-As the first machine learning-based language models appeared, such as the Sequence-to-Sequence (Seq2Seq) model \cite{Sutskever2014SequenceSequenceLearningNeural}, and more recently the transformer-based models such as GPT (Generative Pre-trained Transformer) \cite{Vaswani2023AttentionNeed, Radford2018ImprovingLU}, the capacity of chatbots to understand and generate natural language has improved significantly. These models are trained on large datasets of text, learning the complex patterns and structures of language, and are able to generate text that is coherent and contextually relevant.
+As the first machine learning-based language models appeared, such as the Sequence-to-Sequence (Seq2Seq) model \cite{Sutskever2014SequenceSequenceLearningNeural}, and more recently the transformer-based models such as GPT (Generative Pre-trained Transformer) \cite{Vaswani2023AttentionNeed, Radford2018GPT1}, the capacity of chatbots to understand and generate natural language has improved significantly. These models are trained on large datasets of text, learning the complex patterns and structures of language, and are able to generate text that is coherent and contextually relevant.
 
 \section{GPT and its Contribution}
 \label{sec:gpt}
 
-The GPT model \cite{Radford2018ImprovingLU}, developed by OpenAI, has been one of the most notable advances in this field. GPT uses the transformer architecture \cite{Vaswani2023AttentionNeed}, which is a type of neural network that is particularly well-suited for processing sequences of data, such as text. Its capacity for generating coherent and contextually relevant responses has been leveraged in a wide range of applications, from virtual assistance to automated content generation.
+The GPT model \cite{Radford2018GPT1}, developed by OpenAI, has been one of the most notable advances in this field. GPT uses the transformer architecture \cite{Vaswani2023AttentionNeed}, which is a type of neural network that is particularly well-suited for processing sequences of data, such as text. Its capacity for generating coherent and contextually relevant responses has been leveraged in a wide range of applications, from virtual assistance to automated content generation.
+
+In the following subsections we will go over the evolution of the GPT model, from GPT-1 to GPT-4.
+
+\subsection{GPT-1}
+\label{subsec:gpt-1}
+
+GPT-1 \cite{Radford2018GPT1}, introduced by OpenAI in 2018, marked the beginning of the Transformer-based language models. It used the Transformer architecture, a neural network model that significantly improved over earlier models like recurrent neural networks (RNNs) and Long Short-Term Memory (LSTM) networks. The key innovation in GPT-1 was its ability to generate coherent text by predicting the next word in a sequence, trained on a vast dataset of books and articles. With 117 million parameters, GPT-1 demonstrated that a generative model, pre-trained on a large corpus of text data, could be fine-tuned on specific tasks to achieve good performance across a variety of NLP applications. Although it was relatively small in terms of model size and capacity, GPT-1 established the foundational approach of using unsupervised pre-training followed by supervised fine-tuning.
+
+\subsection{GPT-2}
+\label{subsec:gpt-2}
+
+Building on the success of GPT-1, GPT-2 \cite{Radford2019GPT2} was released in 2019 and significantly increased in size, with versions ranging up to 1.5 billion parameters. GPT-2 demonstrated substantial improvements in language understanding, coherence, and the ability to generate more human-like text. It was trained on a much larger and more diverse dataset, which included a wide range of web pages, allowing it to handle more complex language tasks. GPT-2 could perform zero-shot learning, meaning it could complete tasks without specific training on those tasks, just by leveraging the general knowledge it gained during its pre-training phase. This version showcased the model's capacity to handle a wide range of tasks, from text completion and summarization to translation and question answering, making it a significant milestone in AI research. It was the first model to demonstrate the potential for large-scale language models to generate high-quality text across a variety of domains, and the potential of simply scaling up model size to improve performance.
+
+\subsection{GPT-3}
+\label{subsec:gpt-3}
+
+Released in 2020, GPT-3 \cite{Brown2020GPT3} took another leap in scale and capability with 175 billion parameters, making it one of the largest language models at the time. GPT-3's vast size allowed it to exhibit unprecedented levels of language understanding and generation. It could produce highly coherent and contextually relevant text across diverse topics, maintain longer and more complex conversations, and even exhibit rudimentary reasoning skills. GPT-3 was capable of few-shot and zero-shot learning, further extending its versatility. However, GPT-3 was also computationally expensive and required significant resources for both training and inference, which limited its accessibility.
+
+\subsection{Reinforcement Learning from Human Feedback (RLHF)}
+\label{subsec:rlhf}
+
+\cite{Ouyang2022RLHF} introduced Reinforcement Learning from Human Feedback (RLHF), which marked a significant step forward in the development of GPT models. RLHF is a technique where the model is fine-tuned using feedback from human evaluators who assess the quality of the model's outputs. This method involves the following steps:
+
+
+\begin{itemize}
+  \item \textbf{Pre-training:} The model is initially pre-trained on a large text corpus using unsupervised learning, just like previous versions.
+  \item \textbf{Human Feedback Collection:} Human evaluators review the model's responses to various prompts and rank them based on quality, coherence, relevance, and other criteria.
+  \item \textbf{Reward Model Training:} A separate reward model is trained on these rankings to predict the human evaluators' preferences.
+  \item \textbf{Fine-tuning:} The GPT model is further fine-tuned using a reinforcement learning algorithm, such as Proximal Policy Optimization (PPO) \cite{Schulman2017ProximalPolicyOptimizationAlgorithms}, where the reward model guides the optimization to produce outputs more aligned with human preferences.
+\end{itemize}
+
+By incorporating RLHF, GPT models learn not only from the data they are trained on but also from direct human feedback, allowing them to better align with human values, reduce harmful or biased outputs, and improve overall user satisfaction.
+
+\subsection{GPT-3.5 Turbo}
+\label{subsec:gpt-3.5-turbo}
+
+To optimize GPT-3's capabilities for commercial use, OpenAI released GPT-3.5 Turbo, a more efficient variant of GPT-3.5, designed to offer improved performance while reducing computational costs. GPT-3.5 Turbo maintained much of the language understanding and generation quality of GPT-3 but was optimized for lower latency and more cost-effective deployment, making it suitable for a wider range of applications, including real-time interactive systems like chatbots. It also incorporated the improvements from RLHF to enhance the model's ability to generate high-quality text, follow instructions and align with human preferences.
 
 \section{Retrieval Augmented Generation (RAG)}
 \label{sec:rag}
@@ -168,7 +205,7 @@ One of the most recent advances in the integration of language models has been t
 \section{Applications and Benefits of RAG-based Chatbots}
 \label{sec:applications}
 
-RAG-based chatbots offer a variety of benefits compared with more traditional systems. They are able to generate responses that are more coherent and contextually relevant. In this way users are both less frustrated and more satisfied. These systems also allow the chatbots to have access to newer, more up to date information than the data the model was originally trained on, as the data provided to the information retrieval component can be updated by simply adding new entries to the database. This makes the chatbot more adaptable and flexible, and allows it to provide more accurate and relevant information to users, reducing the necessity of performing full or partial retraining of the model, which can be prohibitively expensive.
+RAG-based chatbots offer a variety of benefits compared with more traditional systems. They are able to generate responses that are more coherent and contextually relevant. In this way users are both less frustrated and more satisfied, thus improving user experience. These systems also allow the chatbots to have access to newer, more up to date information than the data the model was originally trained on, as the data provided to the information retrieval component can be updated by simply adding new entries to the database. This makes the chatbot more adaptable and flexible, and allows it to provide more accurate and relevant information to users, reducing the necessity of performing full or partial retraining of the model, which can be prohibitively expensive.
 
 \chapter{Objectives}
 \label{cap:objectives}
@@ -193,7 +230,7 @@ The main goal of this project is to develop an advanced chatbot system that uses
   \item \textbf{Accessibility}
         \begin{itemize}
           \item \textbf{Multilingual Support} Implement support for multiple languages to make the chatbot accessible to a wider range of users.
-          \item \textbf{Accessibility Features} The system must be designed to be accessible to users with visual or motor impairments. As such, it should support voice input. The voice input feature must be able to be activated through a voice command.
+          \item \textbf{Accessibility Features} The system must be designed to be accessible to users with visual or motor impairments. As such, it should support voice input. The voice input feature must support activation through a voice command.
         \end{itemize}
   \item \textbf{Evaluate and Validate the System}
         \begin{itemize}
