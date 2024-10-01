@@ -18,6 +18,7 @@ The compiled PDF files are:
 ## Project Explainer Video
 <!-- https://github.com/user-attachments/assets/1f2ff448-7d19-4ae4-92bb-14798b5a7fbd -->
 <video controls src="Video Premis Patronat.mp4" title="Video" muted="false"></video>
+Video Premis Patronat.mp4
 
 ## Acknowledgements
 I would like to express my gratitude to my tutor Josep Suy Franch for his guidance and support throughout the development of this project. I would also like to thank Benjamí Fuertes, Sergi Martinez and Joan Oller for their hard work and dedication to the project, and for their patience answering my questions, as well as thank DXC Technology for providing me with this opportunity. I thank my family and friends for their encouragement and understanding during this time. Finally, I would like to thank my fiancée for her unwavering love and support.
