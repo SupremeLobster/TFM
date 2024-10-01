@@ -1,0 +1,259 @@
+1
+00:00:00,058 --> 00:00:02,791
+Hi,I'm Martí Mas and in collaboration with
+
+2
+00:00:02,791 --> 00:00:03,498
+DXC Technology,
+
+3
+00:00:03,644 --> 00:00:04,877
+we are presenting the roject "Tuning
+
+4
+00:00:05,383 --> 00:00:07,267
+a Generative Language Model for the C
+
+5
+00:00:07,267 --> 00:00:09,528
+reation of Customized Chatbots for Pu
+
+6
+00:00:09,528 --> 00:00:10,481
+blic Administrationssupervised by
+
+7
+00:00:10,719 --> 00:00:11,434
+Josep Suy.
+
+8
+00:00:11,854 --> 00:00:14,487
+We built a system that gives a L
+
+9
+00:00:14,487 --> 00:00:16,743
+arge Language Model access to databases
+
+10
+00:00:16,743 --> 00:00:19,375
+or websites and is customizable to client
+
+11
+00:00:19,375 --> 00:00:21,631
+needs through BPMNs using Flowable. The
+
+12
+00:00:21,631 --> 00:00:22,356
+databases or websites
+
+13
+00:00:22,472 --> 00:00:24,352
+provided by the clients contain
+
+14
+00:00:24,352 --> 00:00:26,232
+up-to-date information. The system can
+
+15
+00:00:26,232 --> 00:00:28,112
+answer user queries truthfully by
+
+16
+00:00:28,112 --> 00:00:29,993
+augmenting the model's ability to
+
+17
+00:00:29,993 --> 00:00:32,249
+generate text with the ability to
+
+18
+00:00:32,249 --> 00:00:34,129
+retrieve information from these databases
+
+19
+00:00:34,129 --> 00:00:34,646
+or websites.
+
+20
+00:00:36,412 --> 00:00:38,165
+Retrieval is done intelligently by
+
+21
+00:00:38,165 --> 00:00:39,919
+finding the most semantically relevant
+
+22
+00:00:39,919 --> 00:00:41,877
+pieces of information in the database.
+
+23
+00:00:43,388 --> 00:00:45,534
+With this system, we avoid hallucinations
+
+24
+00:00:45,534 --> 00:00:48,036
+while allowing for a wide range of
+
+25
+00:00:48,036 --> 00:00:49,466
+possible configurations different clients
+
+26
+00:00:49,466 --> 00:00:50,181
+might require.
+
+27
+00:00:50,915 --> 00:00:52,570
+This is called the Retrieval Augmented
+
+28
+00:00:52,570 --> 00:00:53,923
+Generationor RAG. We implement
+
+29
+00:00:55,683 --> 00:00:57,669
+a custom RAG solution called Small-T
+
+30
+00:00:57,669 --> 00:00:59,986
+o-Big-Retrieval which is able to query
+
+31
+00:00:59,986 --> 00:01:01,641
+the documents from multiple semantic
+
+32
+00:01:01,641 --> 00:01:03,088
+levels at the same time.
+
+33
+00:01:04,999 --> 00:01:06,654
+On the frontend, for accessibility
+
+34
+00:01:06,654 --> 00:01:08,640
+reasons, we deploy on edge machine
+
+35
+00:01:08,640 --> 00:01:10,580
+learning to perform hotword recognition
+
+36
+00:01:10,580 --> 00:01:13,041
+on the user's machine. This is done on
+
+37
+00:01:13,041 --> 00:01:15,503
+edge for privacy reasons as we don't want
+
+38
+00:01:15,503 --> 00:01:17,656
+to constantly send microphone data to the
+
+39
+00:01:17,656 --> 00:01:19,052
+cloud. Chatbot.
+
+40
+00:01:23,471 --> 00:01:25,439
+Using machine learning, we first classify
+
+41
+00:01:25,439 --> 00:01:27,408
+user queries into two categories, hard
+
+42
+00:01:27,408 --> 00:01:30,361
+ones and easy ones. We then choose to use
+
+43
+00:01:30,361 --> 00:01:32,986
+a larger or a smaller Language Model to
+
+44
+00:01:32,986 --> 00:01:34,955
+answer the queries based on this
+
+45
+00:01:34,955 --> 00:01:36,595
+classification, reducing costs. This is
+
+46
+00:01:36,595 --> 00:01:37,579
+called RouteLLM.
+
+47
+00:01:38,341 --> 00:01:40,187
+We also implement measures to restrict
+
+48
+00:01:40,187 --> 00:01:42,341
+the behavior of language models to stick
+
+49
+00:01:42,341 --> 00:01:43,880
+to their stakeholders needs and
+
+50
+00:01:43,880 --> 00:01:44,187
+guidelines.
+
+51
+00:01:44,505 --> 00:01:46,546
+The system refuses to answer questions
+
+52
+00:01:46,546 --> 00:01:48,588
+outside the scope defined by the
+
+53
+00:01:48,588 --> 00:01:50,289
+stakeholders or questions that might
+
+54
+00:01:50,289 --> 00:01:51,309
+abuse the system.
+
+55
+00:01:52,710 --> 00:01:55,528
+Here's a quick demo of how it all
+
+56
+00:01:55,528 --> 00:01:56,937
+comes together. Here a
+
+57
+00:01:56,937 --> 00:01:57,290
+stakeholder , the "Departament de Drets Socials
+
+58
+00:01:58,698 --> 00:02:01,164
+de la Generalitat" wants to help citizens
+
+59
+00:02:01,164 --> 00:02:03,630
+know how social rights work and what
+
+60
+00:02:03,630 --> 00:02:04,208
+social benefits
+
+61
+00:02:04,278 --> 00:02:06,392
+they might have access to. The system
+
+62
+00:02:06,392 --> 00:02:08,857
+asks a few questions to understand the
+
+63
+00:02:08,857 --> 00:02:10,619
+user's situation and recommends possible
+
+64
+00:02:10,619 --> 00:02:13,084
+benefits that might be available to them.
+
+65
+00:02:14,346 --> 00:02:15,661
+Thank you for your attention.
