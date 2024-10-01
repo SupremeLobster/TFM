@@ -1,7 +1,10 @@
 # Tuning a Generative Language Model for the Creation of Customized Chatbots for Public Administrations
 This repository contains the LaTeX source files and compiled PDFs for my Master's Thesis titled **"Tuning a Generative Language Model for the Creation of Customized Chatbots for Public Administrations"**. This project is part of my Data Science Master's Degree at _**Universitat de Girona**_ (UdG), developed in collaboration with **DXC Technology**, under the supervision of Josep Suy Franch (UdG) and Miquel Tarragona Margarit (DXC Technology).
 
-- The resulting PDF file can be found in the TFM_MartiMasFullana folder: [[PDF]](TFM_MartíMasFullana/TFM_MartíMasFullana.pdf).
+The compiled PDF files are:
+  1. The full Master's Thesis report, documenting the entire project [[PDF](TFM_MartíMasFullana/TFM_MartíMasFullana.pdf)]
+  2. A 5 page summary of the full report [[PDF](TFM_MartíMasFullana_Summary/TFM_MartíMasFullana_Summary.pdf)]
+  3. A Catalan version of the 5 page summary [[PDF](TFM_MartíMasFullana_Summary_Catalan/TFM_MartíMasFullana_Summary_Catalan.pdf)]
 
 ## Table of Contents
 - [Technical Poster](#technical-poster)
